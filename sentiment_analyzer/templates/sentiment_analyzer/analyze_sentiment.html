@@ -1,0 +1,57 @@
+<!-- sentiment_analyzer/templates/sentiment_analyzer/analyze_sentiment.html -->
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
+    <title>TextVibeAnalyzer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #007BFF;
+        }
+
+        p {
+            margin-bottom: 10px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        textarea {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        input[type="submit"] {
+            background-color: #007BFF;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>TextVibeAnalyzer</h1>
+    <p>Welcome to TextVibeAnalyzer! This tool helps you analyze the sentiment of text.</p>
+    <p>Enter the text you want to analyze in the textarea below and click "Analyze" to see the results.</p>
+
+    <form method="post" action="{% url 'analyze_sentiment' %}">
+        {% csrf_token %}
+        <label for="text">Enter text for analysis:</label><br>
+        <textarea name="text" rows="4" cols="50"></textarea><br>
+        <input type="submit" value="Analyze">
+    </form>
+</body>
+</html>
