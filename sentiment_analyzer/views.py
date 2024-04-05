@@ -1,9 +1,7 @@
-# sentiment_analyzer/views.py
 from django.shortcuts import render
 from .forms import UserInputForm
 from textblob import TextBlob
 from wordcloud import WordCloud
-import matplotlib.pyplot as plt
 import base64
 from io import BytesIO
 
@@ -18,7 +16,7 @@ def analyze_sentiment(request):
             if selected_language != 'en':
                 blob = TextBlob(user_text)
                 try:
-                    translated_blob = blob.translate(to='en')
+                    translated_blob = blob.translate(to='en')[0]  # Access the first element of the translation list
                     user_text = str(translated_blob)
                 except Exception as e:
                     print(f"Translation failed: {e}")
@@ -40,7 +38,7 @@ def analyze_sentiment(request):
             return render(
                 request,
                 'sentiment_analyzer/result.html',
-                {'user_text': user_text, 'sentiment_label': sentiment_label, 'sentiment_score': sentiment_score, 'wordcloud_image_url': wordcloud_image_url}
+                {'text': user_text, 'sentiment_label': sentiment_label, 'sentiment_score': sentiment_score, 'wordcloud_image_url': wordcloud_image_url}
             )
     else:
         form = UserInputForm()
