@@ -13,17 +13,16 @@ def analyze_sentiment(request):
         if form.is_valid():
             user_text = form.cleaned_data['text']
             selected_language = request.POST.get('language', 'en')  # Get the selected language from the form
-            
-            # Translate the text to English if necessary
+
+            # Translate text to English if not already in English
             if selected_language != 'en':
-                translated_blob = TextBlob(user_text)
-                translated_blob = translated_blob.translate(to='en')
-                translated_text = ''
-                for sentence in translated_blob:
-                    translated_text += str(sentence)
-                
-                user_text = translated_text
-                
+                blob = TextBlob(user_text)
+                try:
+                    translated_blob = blob.translate(to='en')[0]  # Access the first element of the translation list
+                    user_text = str(translated_blob)
+                except Exception as e:
+                    print(f"Translation failed: {e}")
+
             # Perform sentiment analysis using TextBlob
             analysis = TextBlob(user_text)
             sentiment_label = analysis.sentiment.polarity
