@@ -10,14 +10,25 @@
             font-family: Arial, sans-serif;
             margin: 20px;
             padding: 20px;
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
         h1 {
             color: #007BFF;
+            margin-bottom: 20px;
         }
 
         p {
-            margin-bottom: 10px;
+            margin-bottom: 20px;
         }
 
         label {
@@ -26,15 +37,30 @@
 
         textarea {
             width: 100%;
-            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            resize: none; /* Prevent resizing */
         }
 
-        input[type="submit"] {
+        select, input[type="submit"] {
             background-color: #007BFF;
             color: white;
-            padding: 10px;
+            padding: 10px 20px;
             border: none;
+            border-radius: 4px;
             cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        select {
+            width: 150px;
+        }
+
+        .submit-wrapper {
+            display: flex;
+            justify-content: flex-end;
         }
 
         input[type="submit"]:hover {
@@ -43,15 +69,41 @@
     </style>
 </head>
 <body>
-    <h1>TextVibeAnalyzer</h1>
-    <p>Welcome to TextVibeAnalyzer! This tool helps you analyze the sentiment of text.</p>
-    <p>Enter the text you want to analyze in the textarea below and click "Analyze" to see the results.</p>
+    <div class="container">
+        <h1>TextVibeAnalyzer</h1>
+        <p>Welcome to TextVibeAnalyzer! This tool helps you analyze the sentiment of text.</p>
+        <p>Enter the text you want to analyze in the textarea below, select the language, and click "Analyze" to see the results.</p>
 
-    <form method="post" action="{% url 'analyze_sentiment' %}">
-        {% csrf_token %}
-        <label for="text">Enter text for analysis:</label><br>
-        <textarea name="text" rows="4" cols="50"></textarea><br>
-        <input type="submit" value="Analyze">
-    </form>
+        <form method="post" action="{% url 'analyze_sentiment' %}">
+            {% csrf_token %}
+            <label for="text">Enter text for analysis:</label><br>
+            <textarea name="text" rows="4" cols="50" placeholder="Type your text here..."></textarea><br>
+            <label for="language">Select language:</label>
+            <select name="language">
+                <option value="ar">Arabic</option>
+                <option value="bn">Bengali</option>
+                <option value="de">German</option>
+                <option value="en" selected>English</option>
+                <option value="es">Spanish</option>
+                <option value="fr">French</option>
+                <option value="hi">Hindi</option>
+                <option value="ml">Malayalam</option>
+                <option value="mr">Marathi</option>
+                <option value="pa">Punjabi</option>
+                <option value="pt">Portuguese</option>
+                <option value="ru">Russian</option>
+                <option value="ta">Tamil</option>
+                <option value="te">Telugu</option>
+                <option value="ur">Urdu</option>
+                <option value="zh">Chinese (Simplified)</option>
+                <!-- Add more languages as needed -->
+            </select>
+            
+            <br><br>
+            <div class="submit-wrapper">
+                <input type="submit" value="Analyze">
+            </div>
+        </form>
+    </div>
 </body>
 </html>
