@@ -1,7 +1,9 @@
+# sentiment_analyzer/views.py
 from django.shortcuts import render
 from .forms import UserInputForm
 from textblob import TextBlob
 from wordcloud import WordCloud
+import matplotlib.pyplot as plt
 import base64
 from io import BytesIO
 
@@ -10,9 +12,9 @@ def analyze_sentiment(request):
         form = UserInputForm(request.POST)
         if form.is_valid():
             user_text = form.cleaned_data['text']
-            selected_language = request.POST.get('language', 'en')  # Get the selected language from the form
+            selected_language = request.POST.get('language', 'en')
 
-            # Translate text to English if not already in English
+            # Perform translation if the selected language is not English
             if selected_language != 'en':
                 blob = TextBlob(user_text)
                 try:
@@ -21,7 +23,7 @@ def analyze_sentiment(request):
                 except Exception as e:
                     print(f"Translation failed: {e}")
 
-            # Perform sentiment analysis using TextBlob
+            # Perform sentiment analysis
             analysis = TextBlob(user_text)
             sentiment_label = analysis.sentiment.polarity
             sentiment_score = analysis.sentiment.subjectivity
