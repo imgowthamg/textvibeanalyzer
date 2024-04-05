@@ -18,7 +18,7 @@ def analyze_sentiment(request):
             if selected_language != 'en':
                 blob = TextBlob(user_text)
                 try:
-                    translated_blob = blob.translate(to='en')[0]  # Access the first element of the translation list
+                    translated_blob = blob.translate(to='en')
                     user_text = str(translated_blob)
                 except Exception as e:
                     print(f"Translation failed: {e}")
