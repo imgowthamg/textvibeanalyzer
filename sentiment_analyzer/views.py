@@ -3,7 +3,6 @@ from django.shortcuts import render
 from .forms import UserInputForm
 from textblob import TextBlob
 from wordcloud import WordCloud
-import matplotlib.pyplot as plt
 import base64
 from io import BytesIO
 
@@ -16,12 +15,13 @@ def analyze_sentiment(request):
 
             # Perform translation if the selected language is not English
             if selected_language != 'en':
-                blob = TextBlob(user_text)
                 try:
-                    translated_blob = blob.translate(to='en')[0]  # Access the first element of the translation list
+                    blob = TextBlob(user_text)
+                    translated_blob = blob.translate(to='en')
                     user_text = str(translated_blob)
                 except Exception as e:
                     print(f"Translation failed: {e}")
+                    # Handle translation failure gracefully
 
             # Perform sentiment analysis
             analysis = TextBlob(user_text)
