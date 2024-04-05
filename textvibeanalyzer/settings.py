@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-i0ybc@kb0ld@e3+o4x+-%46$3b02)!9cs!q^8fz+q*)!4%!+=b
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['textvibeanalyzer-093u.onrender.com']
 
 
 # Application definition
