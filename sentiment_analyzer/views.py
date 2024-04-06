@@ -1,20 +1,25 @@
-# sentiment_analyzer/views.py
 from django.shortcuts import render
 from .forms import UserInputForm
 from textblob import TextBlob
 from wordcloud import WordCloud
-import matplotlib.pyplot as plt
 import base64
 from io import BytesIO
 
-def translate_text(text, source_lang, target_lang='en'):
-    try:
-        translator = Translator()
-        translated_text = translator.translate(text, src=source_lang, dest=target_lang).text
-        return translated_text
-    except Exception as e:
-        print(f"Translation failed: {e}")
-        return None
+def generate_word_cloud(user_text):
+    # Generate the word cloud
+    wordcloud = WordCloud(width=800, height=400, background_color='white').generate(user_text)
+
+    # Convert the word cloud to an image
+    image_stream = BytesIO()
+    wordcloud.to_image().save(image_stream, format='PNG')
+
+    # Encode the image as base64
+    image_data = base64.b64encode(image_stream.getvalue()).decode('utf-8')
+
+    # Construct the URL for the image
+    wordcloud_image_url = f"data:image/png;base64,{image_data}"
+
+    return wordcloud_image_url
 
 def analyze_sentiment(request):
     if request.method == 'POST':
@@ -39,18 +44,13 @@ def analyze_sentiment(request):
             sentiment_score = analysis.sentiment.subjectivity
 
             # Generate word cloud
-            wordcloud = WordCloud(width=800, height=400, background_color='white').generate(user_text)
+            wordcloud_image_url = generate_word_cloud(user_text)
 
-            # Convert word cloud to image
-            image_stream = BytesIO()
-            wordcloud.to_image().save(image_stream, format='PNG')
-            image_data = base64.b64encode(image_stream.getvalue()).decode('utf-8')
-            wordcloud_image_url = f"data:image/png;base64,{image_data}"
-
+            # Return the result
             return render(
                 request,
                 'sentiment_analyzer/result.html',
-                {'original_text': form.cleaned_data['text'], 'translated_text': user_text, 'sentiment_label': sentiment_label, 'sentiment_score': sentiment_score, 'wordcloud_image_url': wordcloud_image_url}
+                {'text': user_text, 'sentiment_label': sentiment_label, 'sentiment_score': sentiment_score, 'wordcloud_image_url': wordcloud_image_url}
             )
     else:
         form = UserInputForm()
