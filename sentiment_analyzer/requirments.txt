@@ -30,3 +30,9 @@ typing_extensions==4.8.0
 wordcloud==1.9.2
 langdetect==1.0.9
 transformers==4.13.0
+googletrans==4.0.0-rc1
+
+
+
+
+
