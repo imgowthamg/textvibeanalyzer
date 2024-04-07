@@ -2,24 +2,38 @@ from django.shortcuts import render
 from .forms import UserInputForm
 from textblob import TextBlob
 from wordcloud import WordCloud
+import matplotlib.pyplot as plt
 import base64
 from io import BytesIO
+from googletrans import Translator
 
-def generate_word_cloud(user_text):
-    # Generate the word cloud
-    wordcloud = WordCloud(width=800, height=400, background_color='white').generate(user_text)
+def translate_text(text, source_lang, target_lang='en'):
+    try:
+        translator = Translator()
+        translated_text = translator.translate(text, src=source_lang, dest=target_lang).text
+        return translated_text
+    except Exception as e:
+        print(f"Translation failed: {e}")
+        return None
 
-    # Convert the word cloud to an image
-    image_stream = BytesIO()
-    wordcloud.to_image().save(image_stream, format='PNG')
+def analyze_sentiment_score(text):
+    analysis = TextBlob(text)
+    sentiment_polarity = analysis.sentiment.polarity
+    sentiment_score = abs(sentiment_polarity)
+    return sentiment_polarity, sentiment_score
 
-    # Encode the image as base64
-    image_data = base64.b64encode(image_stream.getvalue()).decode('utf-8')
-
-    # Construct the URL for the image
-    wordcloud_image_url = f"data:image/png;base64,{image_data}"
-
-    return wordcloud_image_url
+def generate_wordcloud(text):
+    wordcloud = WordCloud(width=800, height=400, background_color='white').generate(text)
+    plt.figure(figsize=(10, 6))
+    plt.imshow(wordcloud, interpolation='bilinear')
+    plt.axis('off')
+    plt.tight_layout()  # Ensures that the word cloud is not clipped
+    wordcloud_image = BytesIO()
+    plt.savefig(wordcloud_image, format='png')
+    wordcloud_image.seek(0)
+    wordcloud_image_base64 = base64.b64encode(wordcloud_image.getvalue()).decode('utf-8')
+    plt.close()  # Close the plot to prevent overlapping images
+    return wordcloud_image_base64
 
 def analyze_sentiment(request):
     if request.method == 'POST':
@@ -28,29 +42,22 @@ def analyze_sentiment(request):
             user_text = form.cleaned_data['text']
             selected_language = request.POST.get('language', 'en')
 
-            # Perform translation if the selected language is not English
+            # Translate the text to English if necessary
             if selected_language != 'en':
-                try:
-                    blob = TextBlob(user_text)
-                    translated_blob = blob.translate(to='en')
-                    user_text = str(translated_blob)
-                except Exception as e:
-                    print(f"Translation failed: {e}")
-                    # Handle translation failure gracefully
+                translated_text = translate_text(user_text, source_lang=selected_language, target_lang='en')
+            else:
+                translated_text = user_text
 
-            # Perform sentiment analysis
-            analysis = TextBlob(user_text)
-            sentiment_label = analysis.sentiment.polarity
-            sentiment_score = analysis.sentiment.subjectivity
+            # Perform sentiment analysis on the translated text
+            sentiment_polarity, sentiment_score = analyze_sentiment_score(translated_text)
 
-            # Generate word cloud
-            wordcloud_image_url = generate_word_cloud(user_text)
+            # Generate word cloud based on the original text
+            wordcloud_base64 = generate_wordcloud(user_text)
 
-            # Return the result
             return render(
                 request,
                 'sentiment_analyzer/result.html',
-                {'text': user_text, 'sentiment_label': sentiment_label, 'sentiment_score': sentiment_score, 'wordcloud_image_url': wordcloud_image_url}
+                {'original_text': user_text, 'translated_text': translated_text, 'sentiment_label': sentiment_polarity, 'sentiment_score': sentiment_score, 'wordcloud_image': wordcloud_base64}
             )
     else:
         form = UserInputForm()
