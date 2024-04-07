@@ -1,9 +1,36 @@
-# textvibeanalyzer
- TextVibeAnalyzer is a tool helps you analyze the sentiment of text.to check it is positive,negative or neutral
+# Sentiment Analyzer Project
 
-Enter the text you want to analyze in the textarea below and click "Analyze" to see the results.It will give a report of that text in visual formate
-## Main page
-![Screenshot 2024-01-06 115208](https://github.com/imgowthamg/textvibeanalyzer/assets/119653141/0093841d-48ad-4b64-af21-cf24ef2d0e73)
-## sample input & output
-![Screenshot 2024-01-06 115622](https://github.com/imgowthamg/textvibeanalyzer/assets/119653141/7bcb11d8-ca2b-4d25-b6b8-285c8ccf56e9)
-![Screenshot 2024-01-06 115637](https://github.com/imgowthamg/textvibeanalyzer/assets/119653141/9d4396c0-748f-440a-9638-3a2272920568)
+## Overview
+The Sentiment Analyzer project is a text analysis tool designed to analyze the sentiment of textual data. It employs Natural Language Processing (NLP) techniques to determine the emotional tone of a piece of text, categorizing it as positive, negative, or neutral.
+
+## Features
+- **Sentiment Analysis**: The core feature of the project is sentiment analysis, which classifies text into positive, negative, or neutral categories based on its emotional tone.
+- **Web Interface**: The project provides a user-friendly web interface where users can input text for sentiment analysis.
+- **Visualization**: Sentiment analysis results are visualized using charts and graphs to provide users with a clear understanding of the sentiment distribution.
+- **Multiple Language Support**: The project supports multiple languages, including English, Spanish, Hindi, Tamil, and Malayalam.
+
+## Pipeline
+The project follows a pipeline architecture, consisting of the following stages:
+
+1. **Input**: Users input text data via the web interface or through API endpoints.
+2. **Preprocessing**: Text data undergoes preprocessing, including tokenization, removing stop words, and other normalization techniques.
+3. **Sentiment Analysis**: The preprocessed text is fed into the sentiment analysis model, which predicts the sentiment of the text.
+4. **Visualization**: Sentiment analysis results are visualized using Matplotlib and presented to the user via the web interface.
+5. **Output**: Users can view sentiment analysis results and insights through the web interface or retrieve them programmatically through API endpoints.
+
+## Setup
+To set up the project locally, follow these steps:
+
+1. **Clone the repository**: `git clone https://github.com/your-username/sentiment-analyzer.git`
+2. **Navigate to the project directory**: `cd sentiment-analyzer`
+3. **Install dependencies**: `pip install -r requirements.txt`
+4. **Run the Django development server**: `python manage.py runserver`
+5. **Access the web interface at**: `http://127.0.0.1:8000/`
+
+## Dependencies
+- Django: Web framework for building the user interface
+- NLTK: Natural Language Toolkit for text preprocessing
+- Scikit-learn: Machine learning library for sentiment analysis
+- Matplotlib: Library for data visualization
+
+
