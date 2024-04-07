@@ -1,53 +1,50 @@
-{% load static %}
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sentiment Analysis Result</title>
-    <!-- Add your CSS styles here -->
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            padding: 20px;
-        }
-
-        h1 {
-            color: #007BFF;
-        }
-
-        p {
-            margin-bottom: 10px;
-        }
-
-        strong {
-            font-weight: bold;
-        }
-
-        img {
-            width: 100%;
-            max-width: 600px;
-            height: auto;
+        .back-button {
             margin-top: 20px;
-        }
-
-        a {
-            color: #007BFF;
         }
     </style>
 </head>
 <body>
     <h1>Sentiment Analysis Result</h1>
-    <p><strong>Text:</strong> {{ text }}</p>
-    <p><strong>Sentiment Label:</strong> {% if sentiment_label > 0 %}Positive{% elif sentiment_label < 0 %}Negative{% else %}Neutral{% endif %}</p>
-    <p><strong>Sentiment Score:</strong> {{ sentiment_score }}</p>
 
-    <!-- Add more details or visual indicators here -->
-    <img src="{{ wordcloud_image_url }}" alt="Word Cloud">
-    <p><a href="{% url 'analyze_sentiment' %}">Back to Analysis</a></p>
+    <h2>Original Text:</h2>
+    <p>{{ original_text }}</p>
+
+    {% if translated_text %}
+    <h2>Translated Text:</h2>
+    <p>{{ translated_text }}</p>
+    {% endif %}
+
+    <h2>Sentiment Analysis:</h2>
+    <p><span class="sentiment-label">Sentiment Label:</span> 
+        <span style="color: {% if sentiment_label > 0 %}green{% elif sentiment_label < 0 %}red{% else %}orange{% endif %};">
+        {% if sentiment_label > 0 %}
+            Positive
+        {% elif sentiment_label < 0 %}
+            Negative
+        {% else %}
+            Neutral
+        {% endif %}
+        </span>
+    </p>
+    <p><span class="sentiment-label">Sentiment Score:</span> {{ sentiment_score }}</p>
+
+    <h2>Word Cloud:</h2>
+    <div class="wordcloud">
+        {% if wordcloud_image %}
+        <img src="data:image/png;base64,{{ wordcloud_image }}" alt="Word Cloud">
+        {% else %}
+        <p class="no-cloud">No word cloud generated.</p>
+        {% endif %}
+    </div>
+
+    <!-- Back button -->
+    <a href="/" class="back-button">Back to Main Page</a>
 </body>
 </html>
