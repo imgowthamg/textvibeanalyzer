@@ -21,7 +21,7 @@ The project follows a pipeline architecture, consisting of the following stages:
 ## Setup
 To set up the project locally, follow these steps:
 
-1. **Clone the repository**: `git clone https://github.com/imgowthamg/sentiment-analyzer.git`
+1. **Clone the repository**: `https://github.com/imgowthamg/textvibeanalyzer.git`
 2. **Navigate to the project directory**: `cd sentiment-analyzer`
 3. **Install dependencies**: `pip install -r requirements.txt`
 4. **Run the Django development server**: `python manage.py runserver`
