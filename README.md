@@ -33,4 +33,13 @@ To set up the project locally, follow these steps:
 - Scikit-learn: Machine learning library for sentiment analysis
 - Matplotlib: Library for data visualization
 
+## Sample input
+  ![Screenshot 2024-04-07 130802](https://github.com/imgowthamg/textvibeanalyzer/assets/119653141/50d55d84-7a6a-48ef-af64-3d2269f4b80e)
+
+
+## Sample output
+![Screenshot 2024-04-07 131213](https://github.com/imgowthamg/textvibeanalyzer/assets/119653141/a4529bfb-957f-46b5-865e-5cef62873bce)
+
+
+
 
